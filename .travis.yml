@@ -7,7 +7,7 @@ services:
 before_install:
   - sudo apt-get install jq
   - git clone https://github.com/evannetwork/testcore-config.git
-  - docker run -d -p 8546:8546 -p 8545:8545 --name testcore-snapshot -v ./testcore-config/testcore.json:/root/parity/spec.json -u root evannetwork/testcore-snapshot --chain /root/parity/spec.json --jsonrpc-interface all --unsafe-expose
+  - docker run -d -p 8546:8546 -p 8545:8545 --name testcore-snapshot parity/parity:stable --chain evantestcore --jsonrpc-interface all --unsafe-expose --tracing on --pruning=archive
   - export CC="gcc-5" && export CXX="g++-5" && export LINK="gcc-5" && export LINKXX="g++-5"
 
 script:
