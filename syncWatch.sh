@@ -4,10 +4,8 @@ syncing=true
 
 while [[ $syncing = true ]]
 do
-    curlResult=$(curl --data '{"method":"eth_syncing","params":[],"id":1,"jsonrpc":"2.0"}' -H "Content-Type: application/json" -X POST localhost:8545)
-    echo $curlResult
+    curlResult=$(curl -s --data '{"method":"eth_syncing","params":[],"id":1,"jsonrpc":"2.0"}' -H "Content-Type: application/json" -X POST localhost:8545)
     synced=$(echo $curlResult | jq '.result == false')
-    echo $synced
     if $synced; then
       break
     fi
