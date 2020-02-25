@@ -11,6 +11,7 @@ before_install:
   - export CC="gcc-5" && export CXX="g++-5" && export LINK="gcc-5" && export LINKXX="g++-5"
 
 script:
+  - sleep 100
   - ./syncWatch.sh
   - docker commit testcore-snapshot evannetwork/testcore-snapshot
 
