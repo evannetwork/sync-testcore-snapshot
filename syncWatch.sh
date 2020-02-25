@@ -5,7 +5,6 @@ syncing=true
 while [[ $syncing = true ]]
 do
     curlResult=$(curl --retry 300 --retry-delay 5 -s --data '{"method":"eth_syncing","params":[],"id":1,"jsonrpc":"2.0"}' -H "Content-Type: application/json" -X POST localhost:8545)
-    echo $curlResult
     synced=$(echo $curlResult | jq '.result == false')
     if $synced; then
       break
