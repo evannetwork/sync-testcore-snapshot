@@ -1,0 +1,39 @@
+name: Sync testcore and push to Docker Hub
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+    - name: free disk space
+      run: |
+        sudo swapoff -a
+        sudo rm -f /swapfile
+        sudo apt clean
+        docker rmi $(docker image ls -aq)
+        df -h
+    - name: install tools
+      run: sudo apt-get install jq
+    - name: start syncing process
+      run: docker run -d -p 8546:8546 -p 8545:8545 --name testcore-snapshot -u root parity/parity:stable --chain evantestcore --jsonrpc-interface all --unsafe-expose --tracing on --pruning=archive
+    - name: check syncing and commit container
+      run: |
+          sleep 100
+          ./syncWatch.sh
+          docker commit testcore-snapshot evannetwork/testcore-snapshot
+    - name: Login to Docker Hub
+      env:
+        DOCKER_USER: ${{ secrets.DOCKER_USER }}
+        DOCKER_PASS: ${{ secrets.DOCKER_PASS }}
+      run: |
+        echo $DOCKER_PASS | docker login --username=$DOCKER_USER --password-stdin
+    - name: Tag, and push image to Docker Hub
+      env:
+        DOCKER_REPOSITORY: evannetwork/testcore-snapshot
+      run: |
+        docker tag evannetwork/substrate $DOCKER_REPOSITORY:latest
+        docker push $DOCKER_REPOSITORY:latest
