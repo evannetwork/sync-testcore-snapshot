@@ -21,9 +21,11 @@ jobs:
     - name: start syncing process
       run: docker run -d -p 8546:8546 -p 8545:8545 --name testcore-snapshot -u root parity/parity:stable --chain evantestcore --jsonrpc-interface all --unsafe-expose --tracing on --pruning=archive
     - name: check syncing and commit container
+      env:
+        TARGET_BLOCK: 486102
       run: |
           sleep 100
-          ./syncWatch.sh
+          node syncWatch.js
           docker commit testcore-snapshot evannetwork/testcore-snapshot
     - name: Login to Docker Hub
       env:
