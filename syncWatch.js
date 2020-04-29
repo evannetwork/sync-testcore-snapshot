@@ -43,7 +43,6 @@ const doRequest = async() => {
 
       res.on("end", function (chunk) {
         var body = Buffer.concat(chunks);
-        console.log(body.toString());
         resolve(body.toString())
       });
 

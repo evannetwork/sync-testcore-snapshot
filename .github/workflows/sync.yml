@@ -37,5 +37,5 @@ jobs:
       env:
         DOCKER_REPOSITORY: evannetwork/testcore-snapshot
       run: |
-        docker tag evannetwork/substrate $DOCKER_REPOSITORY:latest
+        docker tag evannetwork/testcore-snapshot $DOCKER_REPOSITORY:latest
         docker push $DOCKER_REPOSITORY:latest
