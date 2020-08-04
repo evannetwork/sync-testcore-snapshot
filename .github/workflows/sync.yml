@@ -22,7 +22,7 @@ jobs:
       run: docker run -d -p 8546:8546 -p 8545:8545 --name testcore-snapshot -u root parity/parity:stable --chain evantestcore --jsonrpc-interface all --unsafe-expose --tracing on --pruning=archive
     - name: check syncing and commit container
       env:
-        TARGET_BLOCK: 486102
+        TARGET_BLOCK: 554070
       run: |
           sleep 100
           node syncWatch.js
